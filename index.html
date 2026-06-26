@@ -1,1 +1,317 @@
 
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Книга сказок</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: radial-gradient(circle at top, #ffe9c4 0, #f5d0a9 35%, #e8b98a 70%, #d89c6a 100%);
+            color: #2b1a10;
+        }
+
+        .page {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 24px 16px 40px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 18px;
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+            padding: 24px 20px 28px;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+        }
+
+        .header {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .title {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: rgba(255, 245, 230, 0.9);
+            border: 1px solid rgba(210, 160, 90, 0.4);
+            margin-top: 4px;
+        }
+
+        .badge-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #e88b2f;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .layout {
+                grid-template-columns: minmax(0, 1fr);
+            }
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .field-label {
+            font-size: 13px;
+            margin-bottom: 4px;
+            opacity: 0.85;
+        }
+
+        .textarea {
+            width: 100%;
+            min-height: 120px;
+            border-radius: 12px;
+            border: 1px solid rgba(180, 140, 90, 0.5);
+            padding: 10px 12px;
+            font-size: 14px;
+            resize: vertical;
+            box-sizing: border-box;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .textarea:focus {
+            outline: none;
+            border-color: #e88b2f;
+            box-shadow: 0 0 0 1px rgba(232, 139, 47, 0.35);
+        }
+
+        .select-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 10px 0 14px;
+        }
+
+        .select {
+            flex: 1 1 140px;
+            border-radius: 999px;
+            border: 1px solid rgba(180, 140, 90, 0.5);
+            padding: 6px 10px;
+            font-size: 13px;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .select:focus {
+            outline: none;
+            border-color: #e88b2f;
+            box-shadow: 0 0 0 1px rgba(232, 139, 47, 0.35);
+        }
+
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            margin-top: 8px;
+        }
+
+        .button-main {
+            border: none;
+            border-radius: 999px;
+            padding: 9px 18px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            background: linear-gradient(135deg, #e88b2f, #f3b35a);
+            color: #2b1a10;
+            box-shadow: 0 10px 22px rgba(0, 0, 0, 0.22);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .button-main:active {
+            transform: translateY(1px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+        }
+
+        .button-secondary {
+            border-radius: 999px;
+            border: 1px solid rgba(180, 140, 90, 0.5);
+            padding: 7px 14px;
+            font-size: 13px;
+            background: rgba(255, 255, 255, 0.9);
+            cursor: pointer;
+        }
+
+        .hint {
+            font-size: 12px;
+            opacity: 0.75;
+        }
+
+        .output-card {
+            border-radius: 14px;
+            border: 1px solid rgba(180, 140, 90, 0.4);
+            background: rgba(255, 255, 255, 0.92);
+            padding: 12px 12px 14px;
+            font-size: 14px;
+            min-height: 120px;
+            box-sizing: border-box;
+            white-space: pre-wrap;
+        }
+
+        .output-placeholder {
+            opacity: 0.6;
+            font-size: 13px;
+        }
+
+        .status {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 6px;
+        }
+
+        .footer {
+            margin-top: 22px;
+            font-size: 11px;
+            opacity: 0.7;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+    <div class="card">
+        <div class="header">
+            <div class="title">Книга сказок</div>
+            <div class="subtitle">Черновой прототип генератора сказок и картинок</div>
+            <div class="badge">
+                <div class="badge-dot"></div>
+                <span>Локальный прототип · без нейросети</span>
+            </div>
+        </div>
+
+        <div class="layout">
+            <!-- Левая колонка: ввод -->
+            <div>
+                <div class="section-title">Параметры сказки</div>
+
+                <div class="field-label">Кратко опиши, какую сказку хочешь</div>
+                <textarea id="prompt" class="textarea" placeholder="Например: добрая сказка про девочку, которая нашла волшебный лес и подружилась с говорящими животными..."></textarea>
+
+                <div class="select-row">
+                    <select id="length" class="select">
+                        <option value="short">Короткая сказка</option>
+                        <option value="medium">На 3–5 минут чтения</option>
+                        <option value="long">Подлиннее, как перед сном</option>
+                    </select>
+
+                    <select id="tone" class="select">
+                        <option value="kind">Добрая и спокойная</option>
+                        <option value="adventure">Приключенческая</option>
+                        <option value="funny">С юмором</option>
+                        <option value="fairy">Максимально волшебная</option>
+                    </select>
+                </div>
+
+                <div class="button-row">
+                    <button class="button-main" onclick="generateStory()">
+                        <span>Сгенерировать черновик сказки</span>
+                    </button>
+                    <button class="button-secondary" onclick="clearFields()">
+                        Очистить поля
+                    </button>
+                </div>
+
+                <div class="status" id="status">
+                    Нейросеть пока не подключена — это макет страницы. Позже здесь будет реальная генерация.
+                </div>
+            </div>
+
+            <!-- Правая колонка: вывод -->
+            <div>
+                <div class="section-title">Черновик сказки</div>
+                <div id="output" class="output-card">
+                    <div class="output-placeholder">
+                        Здесь будет появляться черновой текст сказки на основе твоего описания.  
+                        Пока это простая заготовка без нейросети — но уже даёт ощущение будущего проекта.
+                    </div>
+                </div>
+
+                <div class="footer">
+                    Прототип интерфейса · GitHub Pages · val-sio/kniga-skazok
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function generateStory() {
+        const prompt = document.getElementById('prompt').value.trim();
+        const length = document.getElementById('length').value;
+        const tone = document.getElementById('tone').value;
+        const output = document.getElementById('output');
+        const status = document.getElementById('status');
+
+        if (!prompt) {
+            output.innerHTML = '<span class="output-placeholder">Сначала опиши, какую сказку ты хочешь. Без этого я не смогу даже сделать черновой набросок.</span>';
+            return;
+        }
+
+        let lengthText = '';
+        if (length === 'short') lengthText = 'короткую, компактную сказку';
+        if (length === 'medium') lengthText = 'сказку средней длины, примерно на несколько минут чтения';
+        if (length === 'long') lengthText = 'подлинную, развёрнутую сказку перед сном';
+
+        let toneText = '';
+        if (tone === 'kind') toneText = 'добрым и спокойным тоном';
+        if (tone === 'adventure') toneText = 'с лёгким приключенческим настроением';
+        if (tone === 'funny') toneText = 'с мягким, тёплым юмором';
+        if (tone === 'fairy') toneText = 'с максимальным ощущением волшебства и сказочности';
+
+        const text =
+            'Это пока не настоящая нейросетевая генерация, а аккуратный черновой набросок по твоему описанию.\n\n' +
+            'Ты попросила ' + lengthText + ' с ' + toneText + '.\n\n' +
+            'Черновой замысел сказки:\n' +
+            '— ' + prompt + '\n\n' +
+            'Позже здесь будет полноценный текст, который будет создавать нейросеть. Сейчас это макет интерфейса, ' +
+            'чтобы можно было спокойно продумать структуру, ощущения и формат будущего проекта «Книга сказок».';
+
+        output.textContent = text;
+        status.textContent = 'Сейчас это демонстрационный черновик. В будущем здесь будет реальная генерация сказок нейросетью.';
+    }
+
+    function clearFields() {
+        document.getElementById('prompt').value = '';
+        document.getElementById('output').innerHTML =
+            '<div class="output-placeholder">Здесь будет появляться черновой текст сказки на основе твоего описания.  ' +
+            'Пока это простая заготовка без нейросети — но уже даёт ощущение будущего проекта.</div>';
+        document.getElementById('status').textContent =
+            'Нейросеть пока не подключена — это макет страницы. Позже здесь будет реальная генерация.';
+    }
+</script>
+</body>
+</html>
+
